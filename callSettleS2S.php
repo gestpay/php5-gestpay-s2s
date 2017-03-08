@@ -4,14 +4,10 @@
  * Date: 08/03/17
  * Time: 12:32
  *
- * This example shows a way to use callPagamS2S with the minimum required parameters.
- * callPagamS2S is described here: http://docs.gestpay.it/adv/authorization-request.html
- * the API: http://api.gestpay.it/#callpagams2s 
- * 
- * Before opening this file, set M.O.T.O. to authorize only and perform an authorization 
- * request with callPagamS2S.php. 
- * Then, use the shop transaction ID or the bank transaction ID to identify the transaction.    
- * 
+ * This example shows a way to use callSettleS2S with the minimum required parameters.
+ * callSettleS2S is described here: http://docs.gestpay.it/adv/settlements.html
+ * the API: http://api.gestpay.it/#callsettles2s
+ *
  */
 
 //display errors.
@@ -32,29 +28,17 @@ $testEnv = true;
  * shopLogin: this is a code that identifies your account.
  * amount: the amount of the transaction
  * uicCode: the currency code
- * shopTransactionId: a transaction identifier given by you
+ * bankTransID: a transaction identifier returned by the bank
+ *
+ * You can also use the shopTransID, the Id that you gave to the
+ * transaction.
  *****************************************************************/
 
 $shopLogin = "GESPAY65987";
 $amount = "15.72";
 $uicCode = "242"; //EURO
-$shopTransactionId = "GESTPAY_S2S_".date("H:i:s");
-
-/****************************************************************
- * CREDIT CARD DATA (or TOKEN)
- *
- * This is a test credit card, valid only in test environment.
- * Check if the card data has changed.
- * Comment this section if you want to use tokens (see below).
- ****************************************************************/
-$cardNumber = "4775718800001010";
-$expiryMonth = '05';
-$expiryYear = '17';
-
-//Optionally, you can use a Token Value to perform a Payment.
-// See CallRequestTokenS2S, callDeleteTokenS2S, callUpdateTokenS2S on how to use them.
-
-//$tokenValue = "PUT HERE A TOKEN";
+$bankTransID = "109";
+//$shopTransID = "...";
 
 
 /****************************************************************
@@ -64,9 +48,7 @@ $expiryYear = '17';
  * Add the data to the $params variable, too.
  ****************************************************************/
 
-// $buyerEmail = '';
-// $buyerName = '';
-// ...
+// $FullFillment = ...;
 
 
 /****************************************************************
@@ -81,15 +63,12 @@ $param = array(
     'shopLogin' => $shopLogin,
     'amount' => $amount,
     'uicCode' => $uicCode,
-    'shopTransactionId' => $shopTransactionId,
-    'cardNumber' => $cardNumber,
-    'expiryMonth' => $expiryMonth,
-    'expiryYear' => $expiryYear
+    'bankTransID' => $bankTransID
 );
 
 
 /****************************************************************
- * CALL CallPagamS2S
+ * CALL callSettleS2S
  ****************************************************************/
 $wsdl = null;
 //setting up the WSDL url
@@ -106,13 +85,13 @@ $client = new SoapClient($wsdl);
 
 //do the call to Encrypt method
 try {
-    $objectResult = $client->callPagamS2S($param);
+    $objectResult = $client->callSettleS2S($param);
 } //catch SOAP exceptions
 catch (SoapFault $fault) {
     die($fault);
 }
 //parse the XML result
-$result = simplexml_load_string($objectResult->callPagamS2SResult->any);
+$result = simplexml_load_string($objectResult->callSettleS2SResult->any);
 
 //Error Check
 $errCode = (string) $result->ErrorCode;
