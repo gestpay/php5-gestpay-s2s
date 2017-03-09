@@ -101,7 +101,7 @@ if ($testEnv) {
     $wsdl = "https://ecomms2s.sella.it/gestpay/gestpayws/WSs2s.asmx?WSDL";
 }
 
-//NuSoap client
+//Soap client
 $client = new SoapClient($wsdl);
 
 //do the call to Encrypt method

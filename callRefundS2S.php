@@ -4,10 +4,12 @@
  * Date: 08/03/17
  * Time: 12:32
  *
- * This example shows a way to use callDeleteS2S with the minimum required parameters.
- * callDeleteS2S is described here: http://docs.gestpay.it/adv/withdrawal.html
- * the API: http://api.gestpay.it/#calldeletes2s
- *
+ * This example shows a way to use callRefundS2S with the minimum required parameters.
+ * callRefundS2S is described here: http://docs.gestpay.it/adv/reversal.html
+ * the API: http://api.gestpay.it/#callrefunds2s
+ * 
+ * Perform this operation against a settled payment (with status MOV).
+ * 
  */
 
 //display errors.
@@ -28,17 +30,26 @@ $testEnv = true;
  * shopLogin: this is a code that identifies your account.
  * amount: the amount of the transaction
  * uicCode: the currency code
- * bankTransID: a transaction identifier returned by the bank
- *
- * You can also use the shopTransID, the Id that you gave to the
- * transaction.
+ * shopTransactionId: a transaction identifier given by you
+ * bankTransactionId: a transaction identifier given by the bank
  *****************************************************************/
 
 $shopLogin = "GESPAY65987";
-$bankTransactionId = "111";
-//shopTransactionId = "...";
-$cancelReason = "Clicked BUY by error";
+$amount = "15.72";
+$uicCode = "242"; //EURO
+$bankTransactionId = "108";
+$shopTransactionId = null;
 
+/****************************************************************
+ * OPTIONAL DATA
+ *
+ * you can put any other accepted data below this.
+ * Add the data to the $params variable, too.
+ ****************************************************************/
+
+$RefundReason = null;
+$chargeBackFraud = null;
+$OrderDetail = null;
 
 /****************************************************************
  * CREATING SOAP ARGUMENTS
@@ -50,13 +61,18 @@ $cancelReason = "Clicked BUY by error";
 //Set up the parameters array. This array will be the argument for the SOAP call.
 $param = array(
     'shopLogin' => $shopLogin,
+    'amount' => $amount,
+    'uicCode' => $uicCode,
     'bankTransactionId' => $bankTransactionId,
-    'CancelReason' => $cancelReason
+    'shoptransactionId' => $shopTransactionId,
+    'RefundReason' => $RefundReason,
+    'chargeBackFraud' => $chargeBackFraud,
+    'OrderDetail' => $OrderDetail
 );
 
 
 /****************************************************************
- * CALL callDeleteS2S
+ * CALL callRefundS2S
  ****************************************************************/
 $wsdl = null;
 //setting up the WSDL url
@@ -73,13 +89,13 @@ $client = new SoapClient($wsdl);
 
 //do the call to Encrypt method
 try {
-    $objectResult = $client->callDeleteS2S($param);
+    $objectResult = $client->callRefundS2S($param);
 } //catch SOAP exceptions
 catch (SoapFault $fault) {
     die($fault);
 }
 //parse the XML result
-$result = simplexml_load_string($objectResult->callDeleteS2SResult->any);
+$result = simplexml_load_string($objectResult->callRefundS2SResult->any);
 
 //Error Check
 $errCode = (string) $result->ErrorCode;
