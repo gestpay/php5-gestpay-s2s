@@ -51,9 +51,9 @@ $testEnv = true;
  *****************************************************************/
 
 $shopLogin = 'GESPAY65987';
-$tokenValue = '54L76F8OSOAK1018';
+$token = '54L76F8OSOAK1018';
 $expiryMonth = '05';
-$epxiryYear = '17';
+$expiryYear = '17';
 $withAut = 'Y';
 
 /****************************************************************
@@ -66,11 +66,10 @@ $withAut = 'Y';
 //Set up the parameters array. This array will be the argument for the SOAP call.
 $param = array(
     'shopLogin' => $shopLogin,
-    'tokenValue' => $tokenValue,
+    'token' => $token,
     'expiryMonth' => $expiryMonth,
-    'epxiryYear' => $epxiryYear,
+    'expiryYear' => $expiryYear,
     'withAut' => $withAut
-
 );
 
 
