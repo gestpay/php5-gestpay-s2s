@@ -38,7 +38,8 @@ load the directory under `http://localhost:8080/php5-gestpay-s2s/`.
 
 To load `callPagamS2S.php`, just navigate to `http://localhost:8080/php5-gestpay-s2s/callPagamS2S.php`.
 
-When you open a file, the call to Gestpay is performed.
+When you open a file, the call to Gestpay is performed. The result will be shown on page. Set your `shopLogin` and other
+relavant data before.
 
 ## Ideas? Requests?
 
