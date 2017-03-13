@@ -1,8 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <style>
-        html, body {
+    <style>html, body {
             margin: 0;
             padding: 0;
         }
@@ -17,8 +16,7 @@
             font-weight: bold;
             color: red;
             padding: 0;
-        }
-    </style>
+        }</style>
 </head>
 <body>
 <?php
@@ -27,9 +25,9 @@
  * Date: 08/03/17
  * Time: 12:32
  *
- * This example shows a way to use callMyBankListS2S with the minimum required parameters.
- * callMyBankListS2S is described here: http://docs.gestpay.it/adv/mybank-list.html
- * the API: http://api.gestpay.it/#callmybanklists2s
+ * This example shows a way to use callIdealListS2S with the minimum required parameters.
+ * callIdealListS2S is described here: http://docs.gestpay.it/adv/ideal-list.html
+ * the API: http://api.gestpay.it/#callideallists2s
  *
  */
 
@@ -51,7 +49,6 @@ $testEnv = true;
  *****************************************************************/
 
 $shopLogin = "GESPAY65987";
-$languageId = "1";
 
 /****************************************************************
  * CREATING SOAP ARGUMENTS
@@ -62,13 +59,12 @@ $languageId = "1";
 
 //Set up the parameters array. This array will be the argument for the SOAP call.
 $param = array(
-    'shopLogin' => $shopLogin,
-    'languageId' => $languageId
+    'shopLogin' => $shopLogin
 );
 
 
 /****************************************************************
- * CALL callMyBankListS2S
+ * CALL callIdealListS2S
  ****************************************************************/
 //setting up the WSDL url
 $wsdl = "https://ecomms2s.sella.it/gestpay/gestpayws/WSs2s.asmx?WSDL";
@@ -82,34 +78,31 @@ $client = new SoapClient($wsdl);
 
 //do the call to Encrypt method
 try {
-    $objectResult = $client->callMyBankListS2S($param);
-
-
+    $objectResult = $client->CallIdealListS2S($param);
 } //catch SOAP exceptions
 catch (SoapFault $fault) {
     die($fault);
 }
 //parse the XML result
-$result = simplexml_load_string($objectResult->CallMyBankListS2SResult->any);
+$result = simplexml_load_string($objectResult->CallIdealListS2SResult->any);
 
 //Error Check
-$errCode = $result->callMyBankS2SResult->GestPayS2S->ErrorCode;
-$errDesc = $result->callMyBankS2SResult->GestPayS2S->ErrorDescription;
+$errCode = (string)$result->callIdealListS2SResult->GestPayS2S->ErrorCode;
+$errDesc = (string)$result->callIdealListS2SResult->GestPayS2S->ErrorDescription;
 
-if ($errCode != "0") {
+if ($errCode !== "0") {
     //An error has occurred;  check ErrorCode and ErrorDescription
-    echo '<div class="error">Error:';
+    echo '<div class="error">Error: ';
     echo $errCode;
-    echo '<br>ErrorDesc:';
+    echo '<br>ErrorDesc: ';
     echo $errDesc;
     echo '</div>';
 }
+//see the output
 echo '<pre>';
 print_r($result);
 echo '</pre>';
-echo '';
 
 ?>
 </body>
 </html>
-
