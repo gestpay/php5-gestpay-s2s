@@ -47,7 +47,7 @@ $shopTransactionId = null;
 $param = array(
     'shopLogin' => $shopLogin,
     'bankTransactionId' => $bankTransactionId,
-    'shoptransactionId' => $shopTransactionId
+    'shopTransactionId' => $shopTransactionId
 );
 
 
